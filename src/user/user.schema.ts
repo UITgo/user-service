@@ -7,8 +7,10 @@ export class User extends Document {
     authId: string;
 
     @Prop({required: true})
-    name: string;
+    fullname: string;
 
     @Prop({default: ''})
     avatar: string;
 }
+
+export const UserSchema = SchemaFactory.createForClass(User);
