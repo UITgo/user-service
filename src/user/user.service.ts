@@ -4,7 +4,6 @@ import {Model} from "mongoose";
 import {User} from './user.schema'
 import { CreateUserDto } from "src/dto/create-user.dto";
 import { S3Service } from '../s3/s3.service';
-import {UpdateNameDto} from "src/dto/update-name.dto"
 
 @Injectable()
 export class UserService {
@@ -24,7 +23,7 @@ export class UserService {
 
         return user.save();
     }
-    
+
     async uploadAvatar(authId: string, file: Express.Multer.File) {
         const { key, url } = await this.s3Service.uploadfile(file, authId);
         await this.userModel.findOneAndUpdate(
