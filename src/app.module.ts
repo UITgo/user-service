@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { MulterModule } from '@nestjs/platform-express';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { UserModule } from './user/user.module';
@@ -15,6 +16,9 @@ import { UserModule } from './user/user.module';
         dbName: 'users',
       }),
       inject: [ConfigService],
+    }),
+    MulterModule.register({
+      dest: './uploads', 
     }),
     UserModule,
   ],
