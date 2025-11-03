@@ -1,20 +1,21 @@
-FROM node:21-alpine
-WORKDIR /src/user-service
+# ---------- build stage ----------
+FROM node:20-alpine AS build
+WORKDIR /app
 COPY package*.json ./
-RUN npm install
+RUN --mount=type=cache,target=/root/.npm npm ci --no-audit --no-fund
 COPY . .
+RUN npm run build   # tạo thư mục dist/
 
-ARG DB_URL
-ARG AWS_REGION
-ARG AWS_ACCESS_KEY
-ARG AWS_SECRET_KEY
-ARG AWS_S3_BUCKET
+# ---------- runtime stage ----------
+FROM node:20-alpine
+WORKDIR /app
+ENV NODE_ENV=production
+ENV PORT=3001
 
-ENV DB_URL=$DB_URL
-ENV AWS_REGION=$AWS_REGION
-ENV AWS_ACCESS_KEY=$AWS_ACCESS_KEY
-ENV AWS_SECRET_KEY=$AWS_SECRET_KEY
-ENV AWS_S3_BUCKET=$AWS_S3_BUCKET
+# KHÔNG bake secrets vào image. Truyền qua docker-compose bằng environment.
+COPY --from=build /app/package*.json ./
+RUN npm ci --omit=dev
+COPY --from=build /app/dist ./dist
 
 EXPOSE 3001
-CMD ["npm", "run", "start:prod"]
+CMD ["node","dist/main.js"]

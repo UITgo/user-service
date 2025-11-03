@@ -21,6 +21,13 @@ export class UserController {
   findOne(@Param('authId') authId: string) {
     return this.userService.getUserbyId(authId);
   }
-
+  @Get('me')
+  async me() {
+    return {
+      authId: 'u001',
+      name: 'Pham Thi Kieu Diem',
+      email: '23520286@gm.uit.edu.vn',
+    };
+  }
 
 }
