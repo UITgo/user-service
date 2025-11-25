@@ -18,7 +18,8 @@ export class UserService {
 
         const user = new this.userModel({
             authId: CreateUserDto.authId,
-            fullname: CreateUserDto.fullname
+            fullname: CreateUserDto.fullname,
+            role: CreateUserDto.role,
         });
 
         return user.save();
