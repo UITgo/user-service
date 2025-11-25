@@ -12,6 +12,9 @@ export class User extends Document {
 
     @Prop({ default: '' })
     avatar: string;
+
+    @Prop({ required: true, enum: ['PASSENGER', 'DRIVER'] })
+    role: string;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

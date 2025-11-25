@@ -1,4 +1,4 @@
-import { IsString, IsNotEmpty, Matches } from 'class-validator';
+import { IsString, IsNotEmpty, Matches, IsIn } from 'class-validator';
 
 export class CreateUserDto {
   @IsString()
@@ -9,4 +9,9 @@ export class CreateUserDto {
   @IsNotEmpty()
   @Matches(/^[A-Za-zÀ-ỹ\s]+$/)
   fullname: string;
+
+  @IsString()
+  @IsNotEmpty()
+  @IsIn(['PASSENGER', 'DRIVER'])
+  role: 'PASSENGER' | 'DRIVER';
 }
